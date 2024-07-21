@@ -12,6 +12,8 @@ A repository to review the main concepts about Functional Programming with Java.
 
 ```bash
 sdk env install
+
+./mvnw clean test -Dtest=EasyRacer1Test -pl problems
 ./mvnw clean test -DexcludedGroups=performance,endtoend
 ./mvnw clean test -DexcludedGroups=performance,endtoend -pl training
 ./mvnw clean test -DexcludedGroups=performance,endtoend -Dtest=EitherTest -pl training

@@ -15,8 +15,19 @@
     <name>problems</name>
     <description>Euler and Latency solutions/tests</description>
 
+    <properties>
+        <jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
+    </properties>
+
     <dependencies>
         
+        <!-- Not nulls -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>${jakarta.annotation-api.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
