@@ -7,6 +7,7 @@
 		<groupId>info.jab.fp</groupId>
 		<artifactId>functional-rosseta-stone</artifactId>
 		<version>0.4.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>info.jab.fp</groupId>

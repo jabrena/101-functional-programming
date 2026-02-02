@@ -31,7 +31,8 @@
 	</modules>
 
 	<properties>
-		<java.version>22</java.version>
+		<java.version>25</java.version>
+		<maven.version>3.9.12</maven.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -55,8 +56,6 @@
 		<awaitility.version>4.2.1</awaitility.version>
 
 		<jmh.version>1.37</jmh.version>
-
-		<checkstyle.skip>true</checkstyle.skip>
 	</properties>
 
 	<!-- Default dependencies for the different modules -->
@@ -193,24 +192,16 @@
                                 <!-- <dependencyConvergence/> -->
                                 <banDuplicatePomDependencyVersions/>
                                 <requireMavenVersion>
-                                    <version>3.6.3</version>
+                                    <version>${maven.version}</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>22</version>
+                                    <version>${java.version}</version>
                                 </requireJavaVersion>
                                 <bannedDependencies>
                                     <excludes>
                                         <exclude>org.projectlombok:lombok</exclude>
                                     </excludes>
                                 </bannedDependencies>
-								<!--
-								<requirePluginVersions>
-									<banLatest>true</banLatest>
-									<banRelease>true</banRelease>
-									<banSnapshots>true</banSnapshots>
-									<phases>clean,deploy,site</phases>
-								 </requirePluginVersions>
-								 -->
                             </rules>
                             <fail>true</fail>
                         </configuration>
@@ -219,33 +210,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.3.1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>10.16.0</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <failsOnError>true</failsOnError>
-                    <failOnViolation>true</failOnViolation>
-                    <consoleOutput>true</consoleOutput>
-                    <configLocation>checkstyle.xml</configLocation>
-                    <suppressionsLocation>checkstyle_ignore.xml</suppressionsLocation>
-                </configuration>
             </plugin>
 		</plugins>
 	</build>

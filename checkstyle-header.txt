@@ -1,6 +1,0 @@
-/*
- *  Functional Rosetta Stone Copyright (c) 2019
- *  All rights reserved.
- *  Licensed under the Apache 2 license.
- *  For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/Apache-2.0
- */
