@@ -41,7 +41,7 @@
 		<jackson.version>2.17.1</jackson.version>
 
 		<commons-lang3.version>3.14.0</commons-lang3.version>
-		<guava.version>33.2.0-jre</guava.version>
+		<guava.version>33.5.0-jre</guava.version>
 		<vavr.version>0.10.2</vavr.version>
 		<reactor.version>3.6.6</reactor.version>
 		<reactor.blockhound.version>1.0.0.RELEASE</reactor.blockhound.version>
