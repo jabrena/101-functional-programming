@@ -22,20 +22,22 @@ public class MyFaultyEndpointController {
     }
 
     @GetMapping("/my-faulty-endpoint")
-    public ResponseEntity<ApiResponse<MyResponse>> getMyFaultyEndpoint() {
-        var result = myFaultyService.process();
-        return result.fold(
-            this::handleError,
-            success -> ResponseEntity.ok(new ApiResponse.Success<>(new MyResponse(success)))
-        );
+    public ResponseEntity<ApiResponse> getMyFaultyEndpoint() {
+        return myFaultyService.process()
+            .map(this::buildSuccessResponse)
+            .getOrElseGet(this::buildErrorResponse);
     }
 
-    private ResponseEntity<ApiResponse<MyResponse>> handleError(String error) {
+    private ResponseEntity<ApiResponse> buildSuccessResponse(String success) {
+        return ResponseEntity.ok(new ApiResponse.Success(new MyResponse(success)));
+    }
+
+    private ResponseEntity<ApiResponse> buildErrorResponse(String error) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
             HttpStatus.INTERNAL_SERVER_ERROR,
             error
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ApiResponse.Error<>(problemDetail));
+            .body(new ApiResponse.Error(problemDetail));
     }
 }

@@ -2,7 +2,7 @@ package info.jab.ms.model;
 
 import org.springframework.http.ProblemDetail;
 
-public sealed interface ApiResponse<T> permits ApiResponse.Success, ApiResponse.Error {
-    record Success<T>(T data) implements ApiResponse<T> {}
-    record Error<T>(ProblemDetail problem) implements ApiResponse<T> {}
+public sealed interface ApiResponse permits ApiResponse.Success, ApiResponse.Error {
+    record Success(MyResponse data) implements ApiResponse {}
+    record Error(ProblemDetail problem) implements ApiResponse {}
 }
