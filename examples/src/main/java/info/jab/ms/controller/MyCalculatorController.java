@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 
+import io.vavr.control.Either;
 import info.jab.ms.service.MyCalculatorService;
 
 @RestController
@@ -27,9 +28,25 @@ public class MyCalculatorController {
 
     @GetMapping("/divide")
     public ResponseEntity<ApiResponse> divide(@RequestParam int a, @RequestParam int b) {
-        return myCalculatorService.divide(a, b)
+        return validateParams(a, b)
+            .flatMap(params -> myCalculatorService.divide(params.a(), params.b()))
             .map(this::buildSuccessResponse)
             .getOrElseGet(this::buildErrorResponse);
+    }
+
+    private record ValidatedParams(int a, int b) {}
+
+    private Either<String, ValidatedParams> validateParams(int a, int b) {
+        if (a < 0) {
+            return Either.left("Parameter 'a' must be non-negative");
+        }
+        if (b < 0) {
+            return Either.left("Parameter 'b' must be non-negative");
+        }
+        if (b == 0) {
+            return Either.left("Division by zero is not allowed");
+        }
+        return Either.right(new ValidatedParams(a, b));
     }
 
     private ResponseEntity<ApiResponse> buildSuccessResponse(Double result) {
