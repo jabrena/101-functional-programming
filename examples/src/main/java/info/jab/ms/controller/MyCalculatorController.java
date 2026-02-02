@@ -3,37 +3,37 @@ package info.jab.ms.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 
-import info.jab.ms.model.MyResponse;
-import info.jab.ms.service.MyFaultyService;
+import info.jab.ms.service.MyCalculatorService;
 
 @RestController
-@RequestMapping("/api/v1")
-public class MyFaultyEndpointController {
+@RequestMapping("/api/v1/calculator")
+public class MyCalculatorController {
 
-    private final MyFaultyService myFaultyService;
+    private final MyCalculatorService myCalculatorService;
 
-    public MyFaultyEndpointController(MyFaultyService myFaultyService) {
-        this.myFaultyService = myFaultyService;
+    public MyCalculatorController(MyCalculatorService myCalculatorService) {
+        this.myCalculatorService = myCalculatorService;
     }
 
     private sealed interface ApiResponse permits ApiResponse.Success, ApiResponse.Error {
-        record Success(MyResponse data) implements ApiResponse {}
+        record Success(Double data) implements ApiResponse {}
         record Error(ProblemDetail problem) implements ApiResponse {}
     }
 
-    @GetMapping("/my-faulty-endpoint")
-    public ResponseEntity<ApiResponse> getMyFaultyEndpoint() {
-        return myFaultyService.process()
+    @GetMapping("/divide")
+    public ResponseEntity<ApiResponse> divide(@RequestParam int a, @RequestParam int b) {
+        return myCalculatorService.divide(a, b)
             .map(this::buildSuccessResponse)
             .getOrElseGet(this::buildErrorResponse);
     }
 
-    private ResponseEntity<ApiResponse> buildSuccessResponse(String success) {
-        return ResponseEntity.ok(new ApiResponse.Success(new MyResponse(success)));
+    private ResponseEntity<ApiResponse> buildSuccessResponse(Double result) {
+        return ResponseEntity.ok(new ApiResponse.Success(result));
     }
 
     private ResponseEntity<ApiResponse> buildErrorResponse(String error) {
