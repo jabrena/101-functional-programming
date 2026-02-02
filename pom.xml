@@ -28,6 +28,7 @@
 		<module>problems</module>
 		<module>training</module>
 		<module>libraries</module>
+		<module>examples</module>
 	</modules>
 
 	<properties>
