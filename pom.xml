@@ -38,12 +38,12 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<slf4j.version>2.1.0-alpha1</slf4j.version>
-		<logback.version>1.5.6</logback.version>
+		<logback.version>1.5.27</logback.version>
 		<jackson.version>2.17.1</jackson.version>
 
 		<commons-lang3.version>3.20.0</commons-lang3.version>
 		<guava.version>33.5.0-jre</guava.version>
-		<vavr.version>0.10.2</vavr.version>
+		<vavr.version>0.11.0</vavr.version>
 		<reactor.version>3.8.2</reactor.version>
 		<reactor.blockhound.version>1.0.0.RELEASE</reactor.blockhound.version>
 		<rxjava.version>2.2.21</rxjava.version>
@@ -54,7 +54,7 @@
 		<mockito.version>5.12.0</mockito.version>
 		<rest-assured.version>5.4.0</rest-assured.version>
 		<wiremock.version>3.6.0</wiremock.version>
-		<awaitility.version>4.2.1</awaitility.version>
+		<awaitility.version>4.3.0</awaitility.version>
 
 		<jmh.version>1.37</jmh.version>
 	</properties>
