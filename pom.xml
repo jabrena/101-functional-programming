@@ -43,7 +43,7 @@
 
 		<commons-lang3.version>3.20.0</commons-lang3.version>
 		<guava.version>33.2.0-jre</guava.version>
-		<vavr.version>0.10.2</vavr.version>
+		<vavr.version>0.11.0</vavr.version>
 		<reactor.version>3.8.2</reactor.version>
 		<reactor.blockhound.version>1.0.0.RELEASE</reactor.blockhound.version>
 		<rxjava.version>2.2.21</rxjava.version>
