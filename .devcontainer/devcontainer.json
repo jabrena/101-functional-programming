@@ -4,7 +4,8 @@
     "name": "Java",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
     //https://mcr.microsoft.com/v2/vscode/devcontainers/java/tags/list
-    "image": "mcr.microsoft.com/devcontainers/java:21",
+    //"image": "mcr.microsoft.com/devcontainers/java:21",
+    "dockerFile": "Dockerfile",
     "hostRequirements": {
       "cpus": 2
     },
