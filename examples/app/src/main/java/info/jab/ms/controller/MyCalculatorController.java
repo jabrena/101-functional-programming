@@ -10,10 +10,14 @@ import org.springframework.http.ResponseEntity;
 
 import io.vavr.control.Either;
 import info.jab.ms.service.MyCalculatorService;
+import info.jab.ms.spec.api.server.ApiApi;
+import info.jab.ms.spec.model.Divide200Response;
+import info.jab.ms.spec.model.SuccessResponse;
+import info.jab.ms.spec.model.ErrorResponse;
 
 @RestController
 @RequestMapping("/api/v1/calculator")
-public class MyCalculatorController {
+public class MyCalculatorController implements ApiApi {
 
     private final MyCalculatorService myCalculatorService;
 
@@ -21,13 +25,17 @@ public class MyCalculatorController {
         this.myCalculatorService = myCalculatorService;
     }
 
+    //Not used
     private sealed interface ApiResponse permits ApiResponse.Success, ApiResponse.Error {
         record Success(Double data) implements ApiResponse {}
         record Error(ProblemDetail problem) implements ApiResponse {}
     }
 
+    @Override
     @GetMapping("/divide")
-    public ResponseEntity<ApiResponse> divide(@RequestParam int a, @RequestParam int b) {
+    public ResponseEntity<Divide200Response> divide(
+            @RequestParam(value = "a", required = true) Integer a,
+            @RequestParam(value = "b", required = true) Integer b) {
         return validateParams(a, b)
             .flatMap(params -> myCalculatorService.divide(params.a(), params.b()))
             .map(this::buildSuccessResponse)
@@ -49,16 +57,26 @@ public class MyCalculatorController {
         return Either.right(new ValidatedParams(a, b));
     }
 
-    private ResponseEntity<ApiResponse> buildSuccessResponse(Double result) {
-        return ResponseEntity.ok(new ApiResponse.Success(result));
+    private ResponseEntity<Divide200Response> buildSuccessResponse(Double result) {
+        SuccessResponse successResponse = new SuccessResponse().data(result);
+        Divide200Response response = new Divide200Response(successResponse);
+        return ResponseEntity.ok(response);
     }
 
-    private ResponseEntity<ApiResponse> buildErrorResponse(String error) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+    private ResponseEntity<Divide200Response> buildErrorResponse(String error) {
+        ProblemDetail springProblemDetail = ProblemDetail.forStatusAndDetail(
             HttpStatus.INTERNAL_SERVER_ERROR,
             error
         );
+        info.jab.ms.spec.model.ProblemDetail specProblemDetail = new info.jab.ms.spec.model.ProblemDetail()
+            .status(springProblemDetail.getStatus())
+            .detail(springProblemDetail.getDetail())
+            .title(springProblemDetail.getTitle())
+            .type(springProblemDetail.getType())
+            .instance(springProblemDetail.getInstance());
+        ErrorResponse errorResponse = new ErrorResponse().problem(specProblemDetail);
+        Divide200Response response = new Divide200Response(errorResponse);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ApiResponse.Error(problemDetail));
+            .body(response);
     }
 }

@@ -13,8 +13,8 @@ A repository to review the main concepts about Functional Programming with Java.
 ```bash
 sdk env install
 
-./mvnw clean test -pl examples
-./mvnw clean spring-boot:run -pl examples
+./mvnw clean test -pl examples/app
+./mvnw clean spring-boot:run -pl examples/app
 ./mvnw clean test -DexcludedGroups=performance,endtoend
 ./mvnw clean test -DexcludedGroups=performance,endtoend -pl training
 ./mvnw clean test -DexcludedGroups=performance,endtoend -Dtest=EitherTest -pl training

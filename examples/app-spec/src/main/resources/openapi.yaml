@@ -1,0 +1,184 @@
+openapi: 3.0.3
+info:
+  title: Functional Rosetta Stone API
+  description: API specification for the Functional Programming examples application
+  version: 0.4.0-SNAPSHOT
+  contact:
+    name: Juan Antonio Breña Moral
+    email: bren@juanantonio.info
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /api/v1/my-endpoint:
+    get:
+      summary: Get a simple hello world message
+      description: Returns a simple greeting message
+      operationId: getMyEndpoint
+      tags:
+        - Endpoints
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+
+  /api/v1/calculator/divide:
+    get:
+      summary: Divide two numbers
+      description: Performs division of two non-negative integers. Returns an error if parameters are invalid or division by zero is attempted.
+      operationId: divide
+      tags:
+        - Calculator
+      parameters:
+        - name: a
+          in: query
+          required: true
+          description: First number (dividend) - must be non-negative
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: b
+          in: query
+          required: true
+          description: Second number (divisor) - must be non-negative and non-zero
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        '200':
+          description: Successful division
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+
+  /api/v1/my-faulty-endpoint:
+    get:
+      summary: Get a response that may fail
+      description: Returns a response that may succeed or fail based on internal service logic
+      operationId: getMyFaultyEndpoint
+      tags:
+        - Endpoints
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessResponseWithMessage'
+                  - $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+
+  /api/v1/katakroker:
+    get:
+      summary: Get katakroker information
+      description: This endpoint throws a RuntimeException which is handled by the global exception handler
+      operationId: getKatakroker
+      tags:
+        - Endpoints
+      responses:
+        '200':
+          description: Successful response (not expected)
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: Internal server error - Katakroker is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+
+components:
+  schemas:
+    MyResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: A message string
+          example: "Hello World"
+
+    ProblemDetail:
+      type: object
+      required:
+        - status
+        - detail
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+        status:
+          type: integer
+          format: int32
+          description: The HTTP status code
+          example: 500
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+          example: "Something goes wrong"
+        instance:
+          type: string
+          format: uri
+          description: A URI reference that identifies the specific occurrence of the problem
+
+    SuccessResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: number
+          format: double
+          description: The result of the calculation
+          example: 2.5
+
+    SuccessResponseWithMessage:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/MyResponse'
+
+    ErrorResponse:
+      type: object
+      required:
+        - problem
+      properties:
+        problem:
+          $ref: '#/components/schemas/ProblemDetail'
